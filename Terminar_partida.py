@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 
 #######################################################DATOS##################################################
-Vent = Tk()
+
 
 Datos_iniciales = [['','','','',''],
                   ['4','','','','2'],
@@ -42,6 +42,10 @@ alternar = []
 """_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_FUNCIONES_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def inicio ():
+    #Crea la vantana principal
+    global Vent
+    Vent = Tk()
+
     global alternar
     #Creación del frame inicial
     Fr = Frame(Vent)
@@ -76,20 +80,24 @@ def inicio ():
     colocar_5.grid(row=4, column =0,pady = 5)
     lista_de_selectores.append(colocar_5)
 
+    Borrar_Número = Radiobutton(Gridselect, text="Borrar", variable = valor, value = 6, indicatoron = False,width="7",height="3")
+    Borrar_Número.grid(row=5, column =0,pady = 5)
+    lista_de_selectores.append(Borrar_Número)
+
     global Gridtablero
     Gridtablero = LabelFrame(Fr)
     Gridtablero.grid(row=0, column=0)
 
     global tablero
     filaBotones = [] # Guarda grupos de 5 botones
-    tablero = [] #Guarda los 5 grupos de 5 botones, creando así la matriz de los botones del tablesro    
+    tablero = [] #Guarda los 5 grupos de 5 botones, creando así la matriz de los botones del tablero    
 
 #Creacion de los botones del tablero
     for fila in range(5):
         
         for columna in range(5):
-            
-            Boton = Button(Gridtablero, width = 7, height = 3,text = Datos[fila][columna], command = lambda fila = fila, columna = columna: colocar(botmat[fila][columna],valor.get()))
+        
+            Boton = Button(Gridtablero, width = 7, height = 3,text = Datos[fila][columna], command = lambda fila = fila, columna = columna: colocar(tablero[fila][columna],valor.get()))
             filaBotones.append(Boton) #Se une el boton a la fila
                      
         tablero.append(filaBotones) #Se une la fila a la matriz
@@ -143,6 +151,7 @@ def inicio ():
         fila_v += 2
         columna_v = 0
 
+    
     Terminar_partida = Button(Fr, text ="TERMINAR PARTIDA", width = 20, bg = "#CD0E0E",command = lambda:Terminar())
     Terminar_partida.grid(row=1,column=0)
     Terminar_partida.config(font=("Times New Roman",14) )
@@ -260,6 +269,11 @@ def des_activ_partida():
 def colocar(self,valor): #probando que el radiobutton reciba el valor apropiado
     if valor == 0:
         print("Seleccione un valor válido")
+        return
+    
+    if valor == 6:
+        print("Valor Borrado")
+        self.config(text = "")
         return
     
     print(valor)
