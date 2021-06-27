@@ -136,9 +136,13 @@ def inicio ():
     Terminar_partida.grid(row = 1,column = 0)
     Terminar_partida.config(font=("Times New Roman",14) )
 
+    Borrar_juego = Button(BFrame, text ="BORRAR JUEGO", width = 20, bg = "#FFFC00",command = lambda:Borrar_partida ())
+    Borrar_juego.grid(row=1,column=1)
+    Borrar_juego.config(font=("Times New Roman",14) )
+
     alternar +=[Borrar_jugada,Rehacer_jugada,Terminar_partida]
 
-    
+ #--------------------------------------------------------------------------------------------------------------------   
     
 def Borrar():
 
@@ -148,45 +152,34 @@ def Borrar():
     global Datos_iniciales
     global tablero
 
-    #Analiza las lista de jugadas
+    #Analiza si hay jugadas para borrar
     if len (Lista_jugadas) == 0:
         #Si no hay jugadas, le notifica al usurio y no hace nada
         print("No quedan movimientos para borrar")
         return
-    
-    if len (Lista_jugadas) == 1:
-        #Si solo hay una jugada, la función se ejecuta
-        Elim = Lista_jugadas.pop()
-        Lista_borradas.append(Elim)
-        
-        #pero como no existe un estado anterior, re-establece al estado inicial
-        Datos = Datos_iniciales[:]
-
-        actualizar_tablero()
-
-        
-    #De lo contrario se ejecuta de manera normal    
+           
+    #Si las hay, borra la última    
     else:
         
         Elim = Lista_jugadas.pop()
         Lista_borradas.append(Elim)
 
+        #Deja la casilla en blanco
         Datos[Elim[1]][Elim[2]] = ''
         tablero[Elim[1]][Elim[2]].config(text = '')
-        
+
+        #Revisa la lista de jugadas para determinar si hubo antes otra jugada en esa casilla
         for jugadant in Lista_jugadas:
+            #Si encuentra alguna la coloca
             if Elim[1] == jugadant[1] and Elim[2] == jugadant[2]:
                 Datos[jugadant[1]][jugadant[2]] = jugadant[0]
 
-        
-
-        #Establece al estado anterior
-
         #Tambien cambia el texto de los botones
         actualizar_tablero()
+    
     print('Jugadas',Lista_jugadas)
     print('Borradas',Lista_borradas)
-    
+    print("\n","\n",Datos,"\n","\n")
     return
 
 def Rehacer():
@@ -204,13 +197,32 @@ def Rehacer():
 
         Datos[Reh[1]][Reh[2]] = Reh[0]
 
-        actualizar_tablero(tablero,Datos)
+        actualizar_tablero()
 
     print('Jugadas',Lista_jugadas)
     print('Borradas',Lista_borradas)
+    print("\n","\n",Datos,"\n","\n")
 
 #----------------------------------------------------------------------------------------------------------------
 
+def Borrar_partida ():
+
+    global Lista_jugadas
+
+    advertencia = messagebox.askokcancel(title = "Borrar partida",
+                                         message = "¿Está seguro de que desea Borrar toddas las jugadas?",
+                                         parent = Vent)
+
+    if not advertencia :
+        return
+
+    #Borra todas las jugadas 
+    while len (Lista_jugadas) != 0:
+        Borrar()
+   
+    return
+
+#----------------------------------------------------------------------------------------------------------------
 def Terminar():
     global Lista_jugadas
     global Datos
