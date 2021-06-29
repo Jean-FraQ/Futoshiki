@@ -728,7 +728,7 @@ def determinar_restricciones(tipo_de_restriccion):
 #-----------------------------------------------------------------------------------------------------------
 def M_U():
     #Despliega el manual de usuario
-    ruta = 'Manual de Usuario Futoshiki.pdf'
+    ruta = 'Manual_de_Usuario_Futoshiki.pdf'
     subprocess.Popen([ruta],shell = True)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
