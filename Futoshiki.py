@@ -15,6 +15,7 @@ def inicio ():
     #Crea la vantana principal
     global Vent
     Vent = Tk()
+    Vent.title("Futoshiki")
 
     global alternar
     #Creación del frame inicial
@@ -22,9 +23,10 @@ def inicio ():
     Fr.pack(anchor = 'center')
     Fr.config(bg = "#B3FFB3")
 
+    Título = Label(Fr,text="FUTOSHIKI", bg = "#B3FFB3",font=("Cooper Black",40))
+    Título.grid(row = 0, column = 1)
     #Creación de los radiobuttons de seleccion de valor
     valor = IntVar()
-
     
     Gridselect = Frame(Fr)
     Gridselect.config(bg = "#B3FFB3")
@@ -57,15 +59,16 @@ def inicio ():
     Borrar_Número.grid(row=5, column =0,pady = (20,0))
     lista_de_selectores.append(Borrar_Número)
 
+    #Frame del tablero
     Gridtablero = LabelFrame(Fr)
     Gridtablero.config(bg = "#B3FFB3")
     Gridtablero.grid(row=1, column=1,padx = 20)
 
     global tablero
-    filaBotones = [] # Guarda grupos de 5 botones
-    tablero = [] #Guarda los 5 grupos de 5 botones, creando así la matriz de los botones del tablero    
+    tablero = [] #Guarda los 5 grupos de 5 botones, creando así la matriz de los botones del tablero
+    filaBotones = [] # Guarda grupos de 5 botones   
 
-#Creacion de los botones del tablero
+    #Creacion de los botones del tablero
     for fila in range(5):
         
         for columna in range(5):
@@ -76,10 +79,9 @@ def inicio ():
         tablero.append(filaBotones) #Se une la fila a la matriz
         filaBotones = []
 
+    #Ordena los botones para crear el tablero
     grid_fila = 0 #Posicion x inicial de la fila 0
     grid_columna = 0 #Posicion y inicial de la columna 0
-    
-    #Ordena los botones para crear el tablero
     for fila in range(0,5):
         
         for columna in range(0,5):
@@ -96,11 +98,9 @@ def inicio ():
     columna_h = 1
     global listor
     listor = []
-    
     for fila in range(5):
         filor = []
         for columna in range(4):
-            
             rest = Label(Gridtablero, text = restricciones_horizontales[fila][columna],font=("Arial",14),bg = "#B3FFB3")
             rest.grid(row = fila_h,column= columna_h)
             filor += [rest]
@@ -116,11 +116,9 @@ def inicio ():
     columna_v = 0
     global listver
     listver = []
-    
     for fila in range(4):
         filver = []
         for columna in range(5):
-
             rest = Label(Gridtablero, text = restricciones_verticales[fila][columna],font=("Arial",14),bg = "#B3FFB3")
             rest.grid(row = fila_v,column= columna_v)
             filver += [rest]
@@ -130,7 +128,7 @@ def inicio ():
         listver += [filver]
         fila_v += 2
         columna_v = 0
-
+    #Frame que contendrá las obciones de juego
     BFrame = Frame(Fr)
     BFrame.config(bg = "#B3FFB3")
     BFrame.grid(row = 1,column = 0,padx = (20,0))
@@ -159,6 +157,7 @@ def inicio ():
     Top_10.grid(row = 3, column = 0, columnspan = 2,pady = (10,0))
     Top_10.config(font=("Times New Roman",14) )
 
+    #Frame para los botones de guardar y cargar partida
     BFrame_GyC = Frame(Fr)
     BFrame_GyC.grid(row = 2, column = 1, columnspan = 2, pady = 30)
 
@@ -170,12 +169,12 @@ def inicio ():
     Cargar_juego.grid(row = 0, column = 1)
     Cargar_juego.config(font=("Times New Roman",14) )
 
+    #Boton que despliega el manual de usuario
     Ayuda = Button(Fr, text ="Ayuda", width = 10,command = lambda: M_U())
-    Ayuda.grid(row = 0, column = 2,pady = (0,20))
+    Ayuda.grid(row = 0, column = 2,pady = (0,20), sticky = "ne" )
     Ayuda.config(font=("Times New Roman",14) )
 
-    guardar_cargar = Frame(Fr)
-
+    #Crea la lista de botones que alternan de estado dependiendo de si la partida está activa o no
     alternar +=[Iniciar_partida,
                 Borrar_jugada,
                 Rehacer_jugada,
@@ -194,7 +193,7 @@ def inicio ():
 #--------------------------------------------------------------------------------------------------------------
 
 def iniciar():
-
+    #Inicia la partida
     global Partida
     global Lista_jugadas
     global Datos
@@ -204,7 +203,7 @@ def iniciar():
     global rest_ver
     global Horizontal
     global Vertical
-
+    #Si no hay una partida, prepara una al azar
     if Partida == ((('','','','',''),('','','','',''),('','','','',''),('','','','',''),('','','','','')),
             (('  ','  ','  ','  '),('','','',''),('','','',''),('','','',''),('','','','')),
             (('','','','',''),('','','','',''),('','','','',''),('','','','',''))):
@@ -217,17 +216,17 @@ def iniciar():
         partida = randint(0,(len(partidas)-1))
 
         Partida = partidas[nivel][partida]
-##        print(Partida)
-##
-##        print("Tablero:")
-##        for fila in Partida[0]:
-##            print(fila)
-##        print("Horizontales:")
-##        for fila in Partida[1]:
-##            print(fila)
-##        print("Verticales:")
-##        for fila in Partida[2]:
-##            print(fila)
+        ## print(Partida)
+        ##
+        ##print("Tablero:")
+        ##for fila in Partida[0]:
+        ##    print(fila)
+        ##print("Horizontales:")
+        ##for fila in Partida[1]:
+        ##    print(fila)
+        ##print("Verticales:")
+        ##for fila in Partida[2]:
+        ##    print(fila)
 
         Datos_iniciales = Partida[0]
 
@@ -248,6 +247,7 @@ def iniciar():
 
         actualizar_tablero ()
         cargar_restricciones (restricciones_horizontales,restricciones_verticales)
+    #Si la hay, activa el juego
     else:
         
         alternar_botones()
@@ -255,24 +255,25 @@ def iniciar():
     
 #--------------------------------------------------------------------------------------------------------------
 
-#Realizacion de una jugadaa
-def movimiento(valor,fila,columna):
 
+def movimiento(valor,fila,columna):
+    #Realiza un movimiento
     global Lista_jugadas
     global Lista_borradas
     
     #valida la jugada
     Error = validar(valor,fila,columna)
+    #Si se dio un error abre una notificación de error específico
     if Error:
         messagebox.showinfo("Jugada no válida", Error)
         return
-
+    #De lo contrario efectua la jugada
     else:
+        #Si el valor es 6, se esta utilizando la opción de borrar del selector
         if valor == 6:
             valor = ""
             Datos[fila][columna] = valor
-        else:
-            pass
+
         Datos[fila][columna] = str(valor)
         Lista_jugadas += [(valor,fila,columna)]
         Lista_borradas = []
@@ -281,21 +282,21 @@ def movimiento(valor,fila,columna):
 ##        print(Datos)
 
         completado = True
-
         for fila in Datos:
             for casilla in fila:
                 if casilla == "":
                     completado = False
                     break
-
+        #Si todas las casillas tienen un valor, la partida se completó        
         if completado:
             messagebox.showinfo(title="Victoria!", message="Felcidades!\nJuego Completado!")
             Terminar(True)
         return
 
-#Ejecuta todas las restricciones y retorna el mensaje apropiado
-def validar (valor,fila,columna):
+#------------------------------------------------------------------------------------------------------------------
 
+def validar (valor,fila,columna):
+    #Ejecuta todas las restricciones y retorna el mensaje apropiado de ser necesario
     global Datos
     global Datos_iniciales
     global rest_hor
@@ -303,32 +304,28 @@ def validar (valor,fila,columna):
    
     #Bandera para controlar errores
     Error = False
-    
+    #Si se está borrando laa casilla, solo valida que el valor de esta no sea fijo
     if valor == 6:
         if rest_fijo(fila,columna,Datos_iniciales) == True:
             Error = 'El valor de la casilla es fijo'
-            return Error
-        else:
-            return Error
+        return Error
 
-
-    if rest_fila(valor,fila,columna,Datos) == True: # movimiento((4,1,1),Datos,Datos_iniciales,rest_hor,rest_ver)
+    #Realiza todas las validaciones 
+    if rest_fila(valor,fila,columna,Datos) == True:
          Error = 'Elemento ya en la fila'
          
-    if rest_columna(valor,fila,columna,Datos) == True: # movimiento((4,0,0),Datos,Datos_iniciales,rest_hor,rest_ver)
+    if rest_columna(valor,fila,columna,Datos) == True: 
          Error = 'Elemento ya en la columna'
          
     #Estado de las restriccions horizontales     
     hor = rest_horizontal(valor,fila,columna,Datos,rest_hor)
     #Estado de las restriccions horizontales
     ver = rest_vertical(valor,fila,columna,Datos,rest_ver)
-
-##    print(hor,ver)
     
-    if hor == 3 or ver == 3: # movimiento((5,1,1),Datos,Datos_iniciales,rest_hor,rest_ver)
+    if hor == 3 or ver == 3: 
          Error = 'No se cumplió la restriccion de mayor'
 
-    if hor == 4 or ver == 4: # movimiento((5,1,2),Datos,Datos_iniciales,rest_hor,rest_ver)
+    if hor == 4 or ver == 4: 
          Error = 'No se cumplió la restriccion de menor'
 
     if hor == 6 or ver == 6:
@@ -337,12 +334,10 @@ def validar (valor,fila,columna):
     if ver == 7 or hor == 7:
          Error = 'El 5 no puede ser el menor de una desigualdad'
          
-    if rest_fijo(fila,columna,Datos_iniciales) == True: # movimiento((4,1,0),Datos,Datos_iniciales,rest_hor,rest_ver)
+    if rest_fijo(fila,columna,Datos_iniciales) == True: 
          Error = 'El valor de la casilla es fijo'
          
-    
-    return Error # movimiento((3,1,3),Datos,Datos_iniciales,rest_hor,rest_ver)
-
+    return Error 
 
 def rest_fila (valor,fila,columna,Datos):
     #Se revisa la fila
@@ -365,7 +360,6 @@ def rest_columna (valor,fila,columna,Datos):
     return 0
 
 def rest_horizontal (valor,fila,columna,Datos,rest_hor):
-
     #Revisa las inequidades horizontales
     for símbolo in rest_hor:
         #Mayores en posicion horizontal
@@ -474,23 +468,23 @@ def rest_vertical (valor,fila,columna,Datos,rest_ver):
 def rest_fijo (fila,columna,Datos_iniciales):
     if Datos_iniciales[fila][columna] != '':
         return True
-    
     return 0
     
 #--------------------------------------------------------------------------------------------------------------------   
     
 def Borrar(consecutividad = False):
-
+    #Borra laúltima jugada realizada
     global Lista_jugadas
     global Lista_borradas
     global Datos
     global Datos_iniciales
     global tablero
-
     #Analiza si hay jugadas para borrar
     if Lista_jugadas == []:
+        #consecutividad indica que se llamó a borrar desde borrar juego
         if consecutividad == True:
             return
+        #Retorna un mensaje de error
         else:
             messagebox.showinfo("Borrar Jugada", "No hay jugadas que borrar")
             return
@@ -505,7 +499,7 @@ def Borrar(consecutividad = False):
         Datos[Elim[1]][Elim[2]] = ''
         tablero[Elim[1]][Elim[2]].config(text = '')
 
-        #Revisa la lista de jugadas para determinar si hubo antes otra jugada en esa casilla
+        #Determina si hubo antes otra jugada en esa casilla
         for jugadant in Lista_jugadas:
             #Si encuentra alguna la coloca
             if Elim[1] == jugadant[1] and Elim[2] == jugadant[2]:
@@ -514,22 +508,22 @@ def Borrar(consecutividad = False):
         #Tambien cambia el texto de los botones
         actualizar_tablero()
     
-    print('Jugadas',Lista_jugadas)
-    print('Borradas',Lista_borradas)
-##    print("\n","\n",Datos,"\n","\n")
+    #print('Jugadas',Lista_jugadas)
+    #print('Borradas',Lista_borradas)
+    #print("\n","\n",Datos,"\n","\n")
     return
 
 def Rehacer():
-
+    #Deshace el último borrado
     global Lista_jugadas
     global Lista_borradas
     global Datos
     global tablero
-
+    #Si no hay nada que borrar despliega un mensaje de error
     if Lista_borradas == []:
         messagebox.showinfo("Rehacer Jugada", "No hay jugadas que rehacer")
         return
-
+    #Restaura la jugada
     else:
         Reh = Lista_borradas.pop()
         Lista_jugadas.append(Reh)
@@ -538,34 +532,32 @@ def Rehacer():
 
         actualizar_tablero()
 
-    print('Jugadas',Lista_jugadas)
-    print('Borradas',Lista_borradas)
-##    print("\n","\n",Datos,"\n","\n")
+    #print('Jugadas',Lista_jugadas)
+    #print('Borradas',Lista_borradas)
+    #print("\n","\n",Datos,"\n","\n")
 
 #----------------------------------------------------------------------------------------------------------------
 
 def Borrar_partida ():
-
+    #Borra todas las jugadas
     global Lista_jugadas
-
+    #Si no hay partidas que borrar despliega un mesaje de error
     if Lista_jugadas == []:
         messagebox.showinfo("Borrar Partida", "No hay jugadas que borrar")
         return
-
+    #Solicita confirmación
     advertencia = messagebox.askokcancel(title = "Borrar partida",
                                          message = "¿Está seguro de que desea Borrar toddas las jugadas?",
                                          parent = Vent)
-
     if not advertencia :
         return
-
     #Borra todas las jugadas 
     while len (Lista_jugadas) != 0:
         Borrar(True)
-   
     return
 
 #----------------------------------------------------------------------------------------------------------------
+
 def Terminar(natural = False):
     #Termina la partida
     global Partida
@@ -587,7 +579,7 @@ def Terminar(natural = False):
 
         if not advertencia :
             return
-
+    #Coloca una partida vacía y actualiza los datos
     Partida = ((('','','','',''),('','','','',''),('','','','',''),('','','','',''),('','','','','')),
                (('  ','  ','  ','  '),('','','',''),('','','',''),('','','',''),('','','','')),
                (('','','','',''),('','','','',''),('','','','',''),('','','','','')))
@@ -611,6 +603,7 @@ def Terminar(natural = False):
     Lista_jugadas = []
     Lista_borradas = []     
 
+    #Alterna los botones y apaga el tablero
     alternar_botones()
     apagar_tablero()
 
@@ -630,7 +623,7 @@ def Guardar():
 
 
 def Cargar():
-
+    #Carga la partida guardada
     global Partida
     global Datos
     global Datos_iniciales
@@ -648,7 +641,7 @@ def Cargar():
     except:
         messagebox.showwarning(title="Cargar Partida", message="No tiene ninguna partida guardada")
         return
-    
+    #Carga la partida
     Partida,Datos,Lista_jugadas,Lista_borradas = partida_guardada
 
     Datos_iniciales = Partida[0]
@@ -668,14 +661,6 @@ def actualizar_tablero():
     for fila in range (5):
             for columna in range (5):
                tablero [fila][columna].config(text = Datos[fila][columna])
-
-#------------------------------------------------------------------------------------------------------------------
-def desactivar_activar(boton):
-    if boton['state'] == 'normal':
-            boton['state'] = 'disabled'
-    else:
-        boton['state'] = 'normal'
-
 #------------------------------------------------------------------------------------------------------------------
 def apagar_tablero():
     #Apaga el tablero
@@ -747,7 +732,7 @@ def M_U():
     subprocess.Popen([ruta],shell = True)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"DATOS DE PRUEBA"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"""
+"""_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"Variables Principales"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"_"""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 #Coloca una partida vacía
@@ -775,5 +760,6 @@ Lista_jugadas = []
 Lista_borradas = []
 
 alternar = []       
+
 inicio()
 print("H0la")
